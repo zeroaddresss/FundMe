@@ -25,8 +25,8 @@ FundMe is a decentralized crowdfunding smart contract built on Ethereum. It allo
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/zeroaddresss/fundme-contract.git
-   cd fundme-contract
+   git clone https://github.com/zeroaddresss/FundMe.git
+   cd FundMe
    ```
 
 2. Install dependencies:
