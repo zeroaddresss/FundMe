@@ -1,72 +1,144 @@
+# FundMe 🚀💰
 
-## About
-This project aims to create a smart contract that allows receiving donations from users (funding) and enables the contract owner to withdraw the funds.
+![Solidity Version](https://img.shields.io/badge/Solidity-^0.8.18-blue)
+![License](https://img.shields.io/badge/License-MIT-green)
+![Build Status](https://img.shields.io/badge/Build-Passing-brightgreen)
 
-## Tools
+FundMe is a decentralized crowdfunding smart contract built on Ethereum. It allows users to fund projects with ETH, automatically converts the amount to USD using Chainlink price feeds, and enables the contract owner to withdraw funds securely.
 
-For the development of this project, Foundry was used to write the script for smart contract deployment and tests to verify its behavior. Additionally, local simulations using Anvil allow testing the project without necessarily deploying it on-chain. It's important to note that the tests are not exhaustive and do not guarantee 100% coverage; they were created for practice and should be considered as such.
+## 🌟 Key Features
 
-## General
+- 💸 Accept ETH contributions
+- 🔗 Real-time ETH/USD conversion using Chainlink price feeds
+- 🔒 Secure fund withdrawal
+- 🧪 Comprehensive test suite for robust functionality
+- 🛠 Configurable for multiple networks (Sepolia, Anvil)
 
-Foundry consists of:
+## 🚀 Quick Start
 
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
+### Prerequisites
 
-### Documentation
+- [Foundry](https://book.getfoundry.sh/getting-started/installation.html)
+- [Git](https://git-scm.com/downloads)
 
-https://book.getfoundry.sh/
+### Installation
 
-### Usage
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/zeroaddresss/fundme-contract.git
+   cd fundme-contract
+   ```
 
-#### Build
+2. Install dependencies:
+   ```bash
+   forge install
+   ```
 
-```shell
-$ forge build
+3. Compile the contracts:
+   ```bash
+   forge build
+   ```
+
+4. Run tests:
+   ```bash
+   forge test
+   ```
+
+### Basic Usage
+
+To deploy the contract:
+
+```bash
+forge script script/DeployFundMe.s.sol:DeployFundMe --rpc-url $RPC_URL --private-key $PRIVATE_KEY --broadcast
 ```
 
-#### Test
+## 📚 Detailed Documentation
 
-```shell
-$ forge test
+### Contract Overview
+
+The FundMe contract allows users to:
+
+1. Fund the contract with ETH (minimum 5 USD equivalent)
+2. Withdraw funds (only contract owner)
+3. Get the current price feed version
+4. View funding information
+
+### Key Functions
+
+- `fund()`: Allows users to fund the contract
+- `withdraw()`: Allows the owner to withdraw all funds
+- `getVersion()`: Returns the current price feed version
+- `getConversionRate()`: Converts ETH to USD
+
+### Configuration
+
+The contract uses `HelperConfig.s.sol` for network-specific configurations:
+
+- Sepolia testnet: Uses the actual Chainlink price feed
+- Local Anvil chain: Deploys a mock price feed for testing
+
+## 💡 Examples and Use Cases
+
+### Funding the Contract
+
+```solidity
+// Assume 1 ETH = $2000 USD
+uint256 amountToSend = 1 ether;
+fundMe.fund{value: amountToSend}();
 ```
 
-#### Format
+### Withdrawing Funds (Owner Only)
 
-```shell
-$ forge fmt
+```solidity
+fundMe.withdraw();
 ```
 
-#### Gas Snapshots
+## 📁 Project Structure
 
-```shell
-$ forge snapshot
+```
+fundme-contract/
+├── src/
+│   ├── FundMe.sol
+│   └── PriceConverter.sol
+├── script/
+│   ├── DeployFundMe.s.sol
+│   └── HelperConfig.s.sol
+├── test/
+│   ├── FundMeTest.t.sol
+│   └── mocks/
+│       └── MockV3Aggregator.sol
+└── README.md
 ```
 
-#### Anvil
+## 🛠 Dependencies
 
-```shell
-$ anvil
+- Solidity ^0.8.18
+- Foundry
+- Chainlink Contracts
+
+## 🧪 Testing
+
+Run the test suite with:
+
+```bash
+forge test
 ```
 
-#### Deploy
+For more verbose output:
 
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
+```bash
+forge test -vvvvv
 ```
 
-#### Cast
+## 🚢 Deployment
 
-```shell
-$ cast <subcommand>
-```
+1. Set up your environment variables:
+   ```
+   export RPC_URL=your_rpc_url
+   export PRIVATE_KEY=your_private_key
+   ```
 
-#### Help
-
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
-```
+2. Deploy to your chosen network:
+   ```bash
+   forge script script/DeployFundMe.s.sol:DeployFundMe --rpc-url $RPC_URL --private-key $PRIVATE_KEY --broadcast
+   ```
